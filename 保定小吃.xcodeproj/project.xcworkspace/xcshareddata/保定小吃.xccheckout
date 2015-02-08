@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>94C29A6F-1BF4-4860-BC0C-A3FE5488C8B2</string>
+	<key>IDESourceControlProjectName</key>
+	<string>保定小吃</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>65559C8F132E4C877FA8B5DD7261D28FB0B5A91D</key>
+		<string>https://github.com/moai2010/-.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>保定小吃/保定小吃.xcodeproj</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>65559C8F132E4C877FA8B5DD7261D28FB0B5A91D</key>
+		<string>../../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/moai2010/-.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>65559C8F132E4C877FA8B5DD7261D28FB0B5A91D</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>65559C8F132E4C877FA8B5DD7261D28FB0B5A91D</string>
+			<key>IDESourceControlWCCName</key>
+			<string>%E4%BF%9D%E5%AE%9A%E5%B0%8F%E5%90%83</string>
+		</dict>
+	</array>
+</dict>
+</plist>

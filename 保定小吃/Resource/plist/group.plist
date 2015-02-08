@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<array>
+	<array>
+		<dict>
+			<key>name</key>
+			<string>绑定其他平台</string>
+			<key>title</key>
+			<string></string>
+			<key>icon</key>
+			<string></string>
+		</dict>
+	</array>
+	<array>
+		<dict>
+			<key>name</key>
+			<string>推送设置</string>
+			<key>title</key>
+			<string></string>
+			<key>icon</key>
+			<string></string>
+		</dict>
+	</array>
+	<array>
+		<dict>
+			<key>name</key>
+			<string>帮助与反馈</string>
+			<key>title</key>
+			<string></string>
+			<key>icon</key>
+			<string></string>
+		</dict>
+		<dict>
+			<key>name</key>
+			<string>关于</string>
+			<key>title</key>
+			<string></string>
+			<key>icon</key>
+			<string></string>
+		</dict>
+	</array>
+</array>
+</plist>
