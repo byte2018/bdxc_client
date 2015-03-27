@@ -92,6 +92,9 @@
     
     self.navigationItem.title =[dataDic objectForKey:@"title"];
     [_webView loadHTMLString:[dataDic objectForKey:@"content"] baseURL:nil];
+    
+    
+//    [_webView setScalesPageToFit:YES];
 }
 
 

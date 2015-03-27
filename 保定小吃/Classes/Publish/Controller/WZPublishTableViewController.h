@@ -11,6 +11,7 @@
 
 @interface WZPublishTableViewController : UITableViewController
 
-
+@property (nonatomic, strong) NSMutableArray *listData;
+@property (nonatomic, strong) NSMutableArray *moreData;
 
 @end

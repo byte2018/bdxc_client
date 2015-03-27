@@ -12,7 +12,8 @@
 @protocol MyReloadDataDelegate
 
 -(void)myReloadData: (NSDictionary *)resDict;
-
+@optional
+-(void)myLoadMoreData: (NSDictionary *)resDict;
 @end
 
 @interface WZHTTPTool : NSObject
@@ -30,6 +31,9 @@
 
 -(void)uploadImage:(NSString *)fullPath myPath:(NSString *) myPath hostName:(NSString *) hostName param: (NSMutableDictionary *)param myFileParam:(NSString *)myFileParam fileType:(NSString *)fileType;
 
--(void)httpPostJsonRequest:(NSString *) hostName myPath:(NSString *) myPath param: (NSMutableDictionary *)param ;
+-(void)httpPostJsonRequest:(NSString *) hostName myPath:(NSString *) myPath param: (NSMutableDictionary *)param;
+
+//用于加载更多数据
+-(void)httpPostJsonRequestForLoadMore:(NSString *) hostName myPath:(NSString *) myPath param: (NSMutableDictionary *)param ;
 
 @end

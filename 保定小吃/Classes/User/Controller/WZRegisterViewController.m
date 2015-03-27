@@ -232,18 +232,18 @@
              //获得上传图片地址
              NSString *fullPath = [[NSHomeDirectory() stringByAppendingPathComponent:@"Documents"] stringByAppendingPathComponent:@"currentImage.png"];
              //访问服务器地址
-             NSString *path = [[NSString alloc] initWithFormat:@"user_registerUser.action"];
+             NSString *path = [[NSString alloc] initWithFormat:@"user.php"];
              
              //需要我们初始化一个空间大小，用dictionaryWithCapacity
              NSMutableDictionary * params = [NSMutableDictionary dictionaryWithCapacity:5];
              //这里我们给的空间大小是5,当添加的数据超过的时候，它的空间大小会自动扩大
              
              //添加数据，注意：id key  是成对出现的
-             [params setObject:_usernameText.text forKey:@"user.userName"];//添加用户名
-             [params setObject:_passwordText.text forKey:@"user.password"];//添加密码
-             [params setObject:_emailText.text forKey:@"user.email"];//添加邮箱地址
+             [params setObject:_usernameText.text forKey:@"username"];//添加用户名
+             [params setObject:_passwordText.text forKey:@"password"];//添加密码
+             [params setObject:_emailText.text forKey:@"email"];//添加邮箱地址
              [params setObject:_telText.text forKey:@"user.telPhone"];//添加手机号码
-             
+              [params setObject:@"adduser" forKey:@"action"];//访问模块
              
              _httpTool = [[WZHTTPTool alloc] init];
               _httpTool.delegate = self;
@@ -274,6 +274,7 @@
 {
     
     NSString *result = [resDict objectForKey:@"result"];
+    NSLog(@"%@", resDict);
     
     BOOL flag = [@"success" isEqualToString:result];//判断字符串是否相同
     if(flag){

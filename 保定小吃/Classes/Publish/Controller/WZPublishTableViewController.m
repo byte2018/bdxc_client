@@ -18,14 +18,13 @@
 #import "WZPublishPictureViewController.h"
 #import "WZWorksStyleViewController.h"
 #import "WZUINavigationViewController.h"
+#import "svpulltorefresh.h"
 
-
-
+#define KPageSize 40 //定义展示的条数
 @interface WZPublishTableViewController () <MySwitchViewDelegate, MyReloadDataDelegate>
 
 {
-    
-    NSMutableArray *_listData;//存储数据
+    NSInteger _page ;
     NSString *_url;//访问url
     NSMutableDictionary *_params;//携带参数
     NSDictionary *_responseDic;//获得返回数据
@@ -51,7 +50,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+    _page = 1;
     //添加自定义导航栏
     [self addMyNavigationItem];
 
@@ -60,6 +59,59 @@
     //抓取后台数据
     [self myRefreshLoadData];
     
+    __weak WZPublishTableViewController *weakSelf = self;
+    [self.tableView addInfiniteScrollingWithActionHandler:^{
+        [weakSelf insertRowAtBottom];
+    }];
+    
+    
+}
+
+#pragma mark 上拉刷新
+-(void)insertRowAtBottom {
+    //加载更多数据
+    _httpTool = [[WZHTTPTool alloc] init];
+    _httpTool.delegate = self;
+    
+    _params = [NSMutableDictionary dictionary];
+    [_params setObject:[NSString stringWithFormat:@"%d", ++_page] forKey:@"page"];
+    [_params setObject:[NSString stringWithFormat:@"%d", KPageSize] forKey:@"pageSize"];
+    [_params setObject:@"index" forKey:@"action"];
+    [_httpTool httpPostJsonRequestForLoadMore:HOSTNAME myPath:@"forum.php" param:_params];
+}
+
+#pragma mark 刷新
+-(void)myLoadMoreData: (NSDictionary *)resDict
+{
+    _moreData = [resDict objectForKey:@"data"];
+    __weak WZPublishTableViewController *weakSelf = self;
+    
+    int64_t delayInSeconds = 2.0;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        [weakSelf.tableView beginUpdates];
+        
+        NSMutableArray *arrM = [[NSMutableArray alloc] init];
+        
+        [arrM addObjectsFromArray:weakSelf.listData];
+        
+        //准备插入数据
+        NSMutableArray *insertIndexPaths = [NSMutableArray array];
+        
+        
+        for(int i = 0; i < _moreData.count; i++){
+            [arrM addObject:_moreData[i]];//添加新数据
+            NSInteger indexPathRow  = weakSelf.listData.count+i;
+            NSIndexPath *newPath = [NSIndexPath indexPathForRow:indexPathRow inSection:0];
+            [insertIndexPaths addObject:newPath];
+        }
+        weakSelf.listData = arrM;
+        
+        [weakSelf.tableView insertRowsAtIndexPaths:insertIndexPaths withRowAnimation:UITableViewRowAnimationTop];
+        [weakSelf.tableView endUpdates];
+        
+        [weakSelf.tableView.infiniteScrollingView stopAnimating];
+    });
     
 }
 
@@ -67,11 +119,15 @@
 #pragma mark 下载刷新组件
 - (void)myRefreshLoadData
 {
+    _page = 1;
     _httpTool = [[WZHTTPTool alloc] init];
     _httpTool.delegate = self;
     
     _params = [NSMutableDictionary dictionary];
-    _listData = [NSMutableArray array];
+    [_params setObject:@"index" forKey:@"action"];
+    [_params setObject:[NSString stringWithFormat:@"%d", _page] forKey:@"page"];
+    [_params setObject:[NSString stringWithFormat:@"%d", KPageSize] forKey:@"pageSize"];
+
     
      [_httpTool httpPostJsonRequest:HOSTNAME myPath:@"forum.php" param: _params];
     
@@ -88,8 +144,17 @@
 {
     if(self.refreshControl.refreshing){
         self.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:@"加载中..."];
-        [_httpTool httpPostJsonRequest:HOSTNAME myPath:@"forum.php" param:_params];
-    }
+        _page = 1;
+        _httpTool = [[WZHTTPTool alloc] init];
+        _httpTool.delegate = self;
+        
+        _params = [NSMutableDictionary dictionary];
+        [_params setObject:@"index" forKey:@"action"];
+        [_params setObject:[NSString stringWithFormat:@"%d", _page] forKey:@"page"];
+        [_params setObject:[NSString stringWithFormat:@"%d", KPageSize] forKey:@"pageSize"];
+        
+        
+        [_httpTool httpPostJsonRequest:HOSTNAME myPath:@"forum.php" param: _params];    }
     
     
 }
@@ -133,6 +198,7 @@
 #pragma mark 点击刷新按钮
 -(void) refreshBtnclick
 {
+    _page = 1;
     //抓取后台数据
     [self myRefreshLoadData];
 }
@@ -149,7 +215,7 @@
     cell.publicShow = publicShow;
     
     CGFloat cellHeight = [cell addCustomStyle];
-    return  cellHeight;
+    return  cellHeight+10;
     
 }
 
@@ -169,27 +235,29 @@
     tableView.separatorStyle = NO;//去除cell分割线
     static NSString *CellIdentifier = @"CustomCell";
     
-    WZCustomTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"CustomCell"];
+    WZCustomTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     
     //这是具有故事版的情况下采用此种方式
     //    UITableView *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
     //获得Cell布局
-    cell.tag = 1;
-    if (!cell) {
-        cell = [[WZCustomTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
+//    cell.tag = 1;
+    if (cell == nil) {
+        cell = [[WZCustomTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:nil];
         
     }else{
         // 删除cell中的子对象,刷新覆盖问题。
-        while ([cell.contentView.subviews lastObject] != nil) {
-            [(UIView *)[cell.contentView.subviews lastObject] removeFromSuperview];
-        }
+//        while ([cell.contentView.subviews lastObject] != nil) {
+//            [(UIView *)[cell.contentView.subviews lastObject] removeFromSuperview];
+//        }
     }
     WZStatusCellFrame *statusCellFrame =[[WZStatusCellFrame alloc] init];
+    
     WZPublishShow * publicShow = [statusCellFrame getMyPublicShow:data];
     
     cell.publicShow = publicShow;
 
     [cell addCustomStyle];
+    
    
     return cell;
 }
@@ -229,7 +297,7 @@
     self.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:@"下拉刷新"];
     
     NSNumber * resultCount = [res objectForKey:@"count"]; //获得后台数据条数
-    NSLog(@"%@", resultCount);
+   
     //如果获得条数为0，则访问失效
     if([resultCount integerValue] > 0){
         _listData = [_responseDic objectForKey:@"data"];

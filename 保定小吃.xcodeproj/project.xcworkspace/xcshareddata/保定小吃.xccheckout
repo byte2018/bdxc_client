@@ -10,22 +10,26 @@
 	<string>保定小吃</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
+		<key>548F0114A400EF1831499B0D0E3844153441267E</key>
+		<string>https://github.com/moai2010/bdxc_client.git</string>
 		<key>65559C8F132E4C877FA8B5DD7261D28FB0B5A91D</key>
 		<string>https://github.com/moai2010/-.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>保定小吃/保定小吃.xcodeproj</string>
+	<string>保定小吃.xcodeproj</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
+		<key>548F0114A400EF1831499B0D0E3844153441267E</key>
+		<string>../..</string>
 		<key>65559C8F132E4C877FA8B5DD7261D28FB0B5A91D</key>
 		<string>../../..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
-	<string>https://github.com/moai2010/-.git</string>
+	<string>https://github.com/moai2010/bdxc_client.git</string>
 	<key>IDESourceControlProjectVersion</key>
 	<integer>111</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>65559C8F132E4C877FA8B5DD7261D28FB0B5A91D</string>
+	<string>548F0114A400EF1831499B0D0E3844153441267E</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
@@ -33,6 +37,14 @@
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
 			<string>65559C8F132E4C877FA8B5DD7261D28FB0B5A91D</string>
+			<key>IDESourceControlWCCName</key>
+			<string></string>
+		</dict>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>548F0114A400EF1831499B0D0E3844153441267E</string>
 			<key>IDESourceControlWCCName</key>
 			<string>%E4%BF%9D%E5%AE%9A%E5%B0%8F%E5%90%83</string>
 		</dict>

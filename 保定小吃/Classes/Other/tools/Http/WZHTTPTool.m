@@ -108,6 +108,37 @@
 
 }
 
+-(void)httpPostJsonRequestForLoadMore:(NSString *) hostName myPath:(NSString *) myPath param: (NSMutableDictionary *)param {
+    _engine = [[MKNetworkEngine alloc] initWithHostName:hostName customHeaderFields:nil];
+    
+    MKNetworkOperation *op = [_engine operationWithPath:myPath params:param httpMethod:@"POST"];
+    
+    [op addCompletionHandler:^(MKNetworkOperation *operation){
+        NSError *eror;
+        NSData *data = [operation responseData];
+        
+        if(data){
+            NSDictionary *resDict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&eror];
+            
+            //调用代理方法切换试图 reloadData:resDict];
+            [_delegate myLoadMoreData:resDict]; //调用代理方法加载数据
+        }
+        
+    } errorHandler:^(MKNetworkOperation *errorOp, NSError* err){
+        NSLog(@"MKNetwork请求错误 : %@", [err localizedDescription]);
+        
+    }];
+    [_engine enqueueOperation:op];
+    
+}
+
+
+
+
+
+
+
+
 
 
 @end

@@ -17,13 +17,14 @@
 #import "WZUINavigationViewController.h"
 #import "UIImageView+WebCache.h"
 #import "WZMsgShowViewController.h"
+#import "svpulltorefresh.h"
 
 #define KTitleHeight 13  //定义标题高度
 #define KDetailTextHeight 12  //定义摘要高度
-
+#define KPageSize 30 //定义展示的条数
 @interface WZHomeTableViewController () <MyReloadDataDelegate, MySwitchViewDelegate, MyImageIndexDelegate>
 {
-    NSMutableArray *_listData;//存储数据
+    NSInteger _page ;
     NSString *_url;//访问url
     NSMutableDictionary *_params;//携带参数
     NSDictionary *_responseDic;//获得返回数据
@@ -47,10 +48,16 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-   
+    
+   _listData = [NSMutableArray array];
     [self myRefreshLoadData];
     
-    //添加标题按钮
+    
+    __weak WZHomeTableViewController *weakSelf = self;
+    [self.tableView addInfiniteScrollingWithActionHandler:^{
+        [weakSelf insertRowAtBottom];
+    }];
+    
     
     //添加登录按钮
     UIButton *loginBtn = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -79,6 +86,18 @@
     self.navigationItem.rightBarButtonItem = refreshbar;
     
 }
+#pragma mark 上拉刷新
+- (void)insertRowAtBottom {
+           //加载更多数据
+        _httpTool = [[WZHTTPTool alloc] init];
+        _httpTool.delegate = self;
+    
+        _params = [NSMutableDictionary dictionary];
+        [_params setObject:[NSString stringWithFormat:@"%d", ++_page] forKey:@"page"];
+        [_params setObject:[NSString stringWithFormat:@"%d", KPageSize] forKey:@"pageSize"];
+        [_params setObject:@"loadMore" forKey:@"action"];
+        [_httpTool httpPostJsonRequestForLoadMore:HOSTNAME myPath:@"portal.php" param:_params];
+    }
 
 #pragma mark 点击刷新按钮
 -(void) refreshBtnclick
@@ -115,13 +134,16 @@
 #pragma mark 下载刷新组件
 - (void)myRefreshLoadData
 {
+    _page = 1;//定义初始分页数
     _httpTool = [[WZHTTPTool alloc] init];
     _httpTool.delegate = self;
     
     _params = [NSMutableDictionary dictionary];
-    _listData = [NSMutableArray array];
-    
+    [_params setObject:[NSString stringWithFormat:@"%d", _page] forKey:@"page"];
+    [_params setObject:[NSString stringWithFormat:@"%d", KPageSize] forKey:@"pageSize"];
+    [_params setObject:@"index" forKey:@"action"];
     [_httpTool httpPostJsonRequest:HOSTNAME myPath:@"portal.php" param:_params];
+    
     
     //初始化UIRefreshControl
     _rc = [[UIRefreshControl alloc] init];
@@ -136,6 +158,10 @@
 {
     if(self.refreshControl.refreshing){
         self.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:@"加载中..."];
+        _page = 1;
+        [_params setObject:@"index" forKey:@"action"];
+        [_params setObject:[NSString stringWithFormat:@"%d", _page] forKey:@"page"];
+        [_params setObject:[NSString stringWithFormat:@"%d", KPageSize] forKey:@"pageSize"];
         [_httpTool httpPostJsonRequest:HOSTNAME myPath:@"portal.php" param:_params];
     }
     
@@ -163,17 +189,10 @@
 }
 
 
-#pragma mark 设置header cell
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-{
-    
-    return nil;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)sectio
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
    
-    return 10;
+    return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -186,23 +205,9 @@
 
 //自动设置cell高度
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    NSMutableDictionary *stringData = [_listData objectAtIndex:indexPath.row];
     
-    NSString *name = [stringData objectForKey:@"title"];
-    NSString *detailTextLabel = [stringData objectForKey:@"summary"];
     
-    NSString *str = [name stringByAppendingString:detailTextLabel];
-    
-    UIFont *tfont = [UIFont systemFontOfSize:KDetailTextHeight];
-    NSDictionary * dic = [NSDictionary dictionaryWithObjectsAndKeys:tfont,NSFontAttributeName,nil];
-    
-    ////////   ios 7
-    CGSize sizeText = [str boundingRectWithSize:CGSizeMake(self.tableView.frame.size.width, 1000) options:NSStringDrawingUsesLineFragmentOrigin attributes:dic context:nil].size;
-    /////////ios 6
-//    CGSize sizeText1 = [str sizeWithFont:[UIFont systemFontOfSize:16.0f] constrainedToSize:CGSizeMake(320, 1000) lineBreakMode:NSLineBreakByCharWrapping];
-   
-    
-    return sizeText.height+60;///////这个60 完全是根据你的情况调整的
+    return 60;///////这个60 完全是根据你的情况调整的
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -292,20 +297,15 @@
 #pragma mark 刷新
 -(void)myReloadData: (NSDictionary *)resDict
 {
+    
     _responseDic = resDict;
-    
-    
     WZImagePage *imagePage = [[WZImagePage alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height * 0.3)];
     imagePage.delegate = self;
     imagePage.listPics = [_responseDic objectForKey:@"addata"];
     [imagePage makeInit];
-    
     //跟随cell一起滚动
     self.tableView.tableHeaderView=imagePage;
-    
     [self.tableView addSubview:imagePage];
-    
-    
     if(!_rc.refreshing){//如果不是第一次进入，则不进行刷新
         // 自行创建下拉动画
         [UIView beginAnimations:nil context:nil];
@@ -317,11 +317,54 @@
         
         // 结束表格视图刷新
         [self performSelector:@selector(reloadView:) withObject:_responseDic afterDelay:2];
-        
     }else{
          // 结束表格视图刷新
         [self performSelector:@selector(reloadView:) withObject:_responseDic afterDelay:2 ];
     }
 }
+
+
+#pragma mark 刷新
+-(void)myLoadMoreData: (NSDictionary *)resDict
+{
+    _moreData = [resDict objectForKey:@"data"];
+    __weak WZHomeTableViewController *weakSelf = self;
+    
+    int64_t delayInSeconds = 2.0;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        [weakSelf.tableView beginUpdates];
+        
+        NSMutableArray *arrM = [[NSMutableArray alloc] init];
+        
+        [arrM addObjectsFromArray:weakSelf.listData];
+        
+        //准备插入数据
+        NSMutableArray *insertIndexPaths = [NSMutableArray array];
+        
+        
+        for(int i = 0; i < _moreData.count; i++){
+            [arrM addObject:_moreData[i]];//添加新数据
+            NSInteger indexPathRow  = weakSelf.listData.count+i;
+            NSIndexPath *newPath = [NSIndexPath indexPathForRow:indexPathRow inSection:0];
+            [insertIndexPaths addObject:newPath];
+        }
+        weakSelf.listData = arrM;
+        
+        [weakSelf.tableView insertRowsAtIndexPaths:insertIndexPaths withRowAnimation:UITableViewRowAnimationTop];
+        [weakSelf.tableView endUpdates];
+        
+        [weakSelf.tableView.infiniteScrollingView stopAnimating];
+    });
+
+}
+
+
+
+
+
+
+
+
 
 @end

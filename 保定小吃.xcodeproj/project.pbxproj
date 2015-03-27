@@ -128,6 +128,9 @@
 		6576FBFC19BAA7D700FEF070 /* common_card_top_background@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6576FBEC19BAA7D700FEF070 /* common_card_top_background@2x.png */; };
 		6576FBFD19BAA7D700FEF070 /* common_card_top_background_highlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 6576FBED19BAA7D700FEF070 /* common_card_top_background_highlighted.png */; };
 		6576FBFE19BAA7D700FEF070 /* common_card_top_background_highlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6576FBEE19BAA7D700FEF070 /* common_card_top_background_highlighted@2x.png */; };
+		6577FE441ABA7A6F000DC4FB /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6577FE431ABA7A6F000DC4FB /* QuartzCore.framework */; };
+		6577FE4B1ABA7B04000DC4FB /* UIScrollView+SVInfiniteScrolling.m in Sources */ = {isa = PBXBuildFile; fileRef = 6577FE481ABA7B04000DC4FB /* UIScrollView+SVInfiniteScrolling.m */; };
+		6577FE4C1ABA7B04000DC4FB /* UIScrollView+SVPullToRefresh.m in Sources */ = {isa = PBXBuildFile; fileRef = 6577FE4A1ABA7B04000DC4FB /* UIScrollView+SVPullToRefresh.m */; };
 		657E3DD819C26299006E516D /* WZCustomUIImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 657E3DD719C26299006E516D /* WZCustomUIImageView.m */; };
 		657E3E0019C2677E006E516D /* navigationbar_compose_highlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 657E3DDA19C2677E006E516D /* navigationbar_compose_highlighted.png */; };
 		657E3E0119C2677E006E516D /* navigationbar_compose_highlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 657E3DDB19C2677E006E516D /* navigationbar_compose_highlighted@2x.png */; };
@@ -426,6 +429,12 @@
 		6576FBEC19BAA7D700FEF070 /* common_card_top_background@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "common_card_top_background@2x.png"; sourceTree = "<group>"; };
 		6576FBED19BAA7D700FEF070 /* common_card_top_background_highlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = common_card_top_background_highlighted.png; sourceTree = "<group>"; };
 		6576FBEE19BAA7D700FEF070 /* common_card_top_background_highlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "common_card_top_background_highlighted@2x.png"; sourceTree = "<group>"; };
+		6577FE431ABA7A6F000DC4FB /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		6577FE461ABA7B04000DC4FB /* SVPullToRefresh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVPullToRefresh.h; sourceTree = "<group>"; };
+		6577FE471ABA7B04000DC4FB /* UIScrollView+SVInfiniteScrolling.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIScrollView+SVInfiniteScrolling.h"; sourceTree = "<group>"; };
+		6577FE481ABA7B04000DC4FB /* UIScrollView+SVInfiniteScrolling.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIScrollView+SVInfiniteScrolling.m"; sourceTree = "<group>"; };
+		6577FE491ABA7B04000DC4FB /* UIScrollView+SVPullToRefresh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIScrollView+SVPullToRefresh.h"; sourceTree = "<group>"; };
+		6577FE4A1ABA7B04000DC4FB /* UIScrollView+SVPullToRefresh.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIScrollView+SVPullToRefresh.m"; sourceTree = "<group>"; };
 		657E3DD619C26299006E516D /* WZCustomUIImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WZCustomUIImageView.h; sourceTree = "<group>"; };
 		657E3DD719C26299006E516D /* WZCustomUIImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WZCustomUIImageView.m; sourceTree = "<group>"; };
 		657E3DDA19C2677E006E516D /* navigationbar_compose_highlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = navigationbar_compose_highlighted.png; sourceTree = "<group>"; };
@@ -586,6 +595,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6577FE441ABA7A6F000DC4FB /* QuartzCore.framework in Frameworks */,
 				6525ED5119E0BF3000EFDD93 /* SystemConfiguration.framework in Frameworks */,
 				65ADBFBA19C684C200404BB1 /* Security.framework in Frameworks */,
 				65ADBFB819C6844D00404BB1 /* CFNetwork.framework in Frameworks */,
@@ -662,6 +672,7 @@
 		6553DE3C19868A0100CA201C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				6577FE431ABA7A6F000DC4FB /* QuartzCore.framework */,
 				6525ED5019E0BF3000EFDD93 /* SystemConfiguration.framework */,
 				65ADBFB919C684C200404BB1 /* Security.framework */,
 				65ADBFB719C6844D00404BB1 /* CFNetwork.framework */,
@@ -792,6 +803,7 @@
 		6553DEA219868C4200CA201C /* Other */ = {
 			isa = PBXGroup;
 			children = (
+				6577FE451ABA7B04000DC4FB /* SVPullToRefresh */,
 				656E7A47198736B800AB9E4C /* Category */,
 				656E7A461987366800AB9E4C /* tools */,
 				6553DEA319868C4200CA201C /* main.m */,
@@ -1094,6 +1106,18 @@
 				6576FBEE19BAA7D700FEF070 /* common_card_top_background_highlighted@2x.png */,
 			);
 			path = CommonCard;
+			sourceTree = "<group>";
+		};
+		6577FE451ABA7B04000DC4FB /* SVPullToRefresh */ = {
+			isa = PBXGroup;
+			children = (
+				6577FE461ABA7B04000DC4FB /* SVPullToRefresh.h */,
+				6577FE471ABA7B04000DC4FB /* UIScrollView+SVInfiniteScrolling.h */,
+				6577FE481ABA7B04000DC4FB /* UIScrollView+SVInfiniteScrolling.m */,
+				6577FE491ABA7B04000DC4FB /* UIScrollView+SVPullToRefresh.h */,
+				6577FE4A1ABA7B04000DC4FB /* UIScrollView+SVPullToRefresh.m */,
+			);
+			path = SVPullToRefresh;
 			sourceTree = "<group>";
 		};
 		657E3DD919C26739006E516D /* Publish */ = {
@@ -1637,6 +1661,7 @@
 				65EBF26919CD118200AE58A4 /* WZLoginViewController.m in Sources */,
 				65A6A58C1998A0EB00AF20A3 /* WZCustomTableViewCell.m in Sources */,
 				65622D1919B95A2F00875E06 /* NSData+ImageContentType.m in Sources */,
+				6577FE4B1ABA7B04000DC4FB /* UIScrollView+SVInfiniteScrolling.m in Sources */,
 				65622D1D19B95A2F00875E06 /* SDWebImageDownloader.m in Sources */,
 				65A83A6719A4442800416F99 /* WZStatusCellFrame.m in Sources */,
 				6599667519921B6C00815279 /* WWTagsCloudView.m in Sources */,
@@ -1657,6 +1682,7 @@
 				658B76B119C3C851001BBB9E /* WZMyButton.m in Sources */,
 				65622D1819B95A2F00875E06 /* MKAnnotationView+WebCache.m in Sources */,
 				65622CF219B92A0200875E06 /* UILabel+StringFrame.m in Sources */,
+				6577FE4C1ABA7B04000DC4FB /* UIScrollView+SVPullToRefresh.m in Sources */,
 				65D618F91989DA7300F724CB /* NSString+WZURLEncoding.m in Sources */,
 				657E3DD819C26299006E516D /* WZCustomUIImageView.m in Sources */,
 				65622D2019B95A2F00875E06 /* SDWebImagePrefetcher.m in Sources */,

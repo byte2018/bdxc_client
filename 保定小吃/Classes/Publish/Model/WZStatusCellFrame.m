@@ -26,7 +26,7 @@
 //    //或者是手动设置样式[formatter setDateFormat:@"yyyy-MM-dd"];
 //    [formatter setDateFormat:@"yyyy-MM-dd"];
 //    NSString *dateString = [formatter stringFromDate:now];
-    NSLog(@"%@", dic);
+//    NSLog(@"%@", dic);
     
     NSDate *  pubDate = [NSDate dateWithTimeIntervalSince1970:[[dic objectForKey:@"dateline"] floatValue]];
     NSDateFormatter *dateFormtter=[[NSDateFormatter alloc] init];

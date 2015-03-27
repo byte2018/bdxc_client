@@ -43,16 +43,15 @@
 
 -(void) addCellBg
 {
+   
     //清空Cell背景色
     self.backgroundColor = [UIColor clearColor];
-    //默认Cell背景
-    UIImage *image = [UIImage tileMyImage:@"common_card_background.png"];
-    self.backgroundView = [[UIImageView alloc] initWithImage:image];// 套用自己的圖片做為背景
     
     
-    //选中Cell时的图片背景
-    UIImage *image2 = [UIImage tileMyImage:@"common_card_background_highlighted.png"];
-    self.selectedBackgroundView =[[UIImageView alloc] initWithImage:image2];// 套用自己的圖片做為背景
+    
+   // 选中Cell时的图片背景
+//    UIImage *image2 = [UIImage tileMyImage:@"common_card_background_highlighted.png"];
+//    self.selectedBackgroundView =[[UIImageView alloc] initWithImage:image2];// 套用自己的圖片做為背景
 
     
 }
@@ -61,6 +60,10 @@
 #pragma  mark 为Cell添加自定义样式
 - (CGFloat)addCustomStyle
 {
+    //默认Cell背景
+    UIImage *image = [UIImage tileMyImage:@"common_card_background.png"];
+    
+     UIView * myCellView = [[UIImageView alloc] initWithImage:image];// 套用自己的圖片做為背景
     
     CGFloat myCellHeight = 0;
    
@@ -76,7 +79,7 @@
     
     myUserIcon.frame = CGRectMake(kUserIconLeftMargain, kUserIconTopMargain, kUserIconWidth, kUserIconHeight);
     
-    [self.contentView addSubview:myUserIcon];
+    [myCellView addSubview:myUserIcon];
 
     
     //添加用户名
@@ -84,7 +87,7 @@
     kUserIconWidth + kUserIconLeftMargain +myUserNameleftMargin, kUserIconTopMargain, 100, 20)];
     
     myUserName.text =_publicShow.userName;
-    [self.contentView addSubview:myUserName];
+    [myCellView addSubview:myUserName];
     
     
     //添加发布时间
@@ -93,7 +96,7 @@
     
     myPulishDate.text = _publicShow.pulishDate;
     myPulishDate.font = [UIFont fontWithName:nil size:12];
-    [self.contentView addSubview:myPulishDate];
+    [myCellView addSubview:myPulishDate];
     
     //添加文字介绍
     UILabel *myTextIntroduce =[[UILabel alloc] init];
@@ -104,11 +107,11 @@
     
     [myTextIntroduce setNumberOfLines:0];
     //获得UILable中的字头高度
-    CGSize myTextIntroduceSize = [myTextIntroduce boundingRectWithSize:CGSizeMake(self.frame.size.width, 0)];
+    CGSize myTextIntroduceSize = [myTextIntroduce boundingRectWithSize:CGSizeMake(self.frame.size.width-2*kUserIconLeftMargain, 0)];
     
     myTextIntroduce.frame = CGRectMake(kUserIconLeftMargain, kUserIconTopMargain + 20 + myTextIntroduceTopMargin,myTextIntroduceSize.width, myTextIntroduceSize.height);
     
-    [self.contentView addSubview:myTextIntroduce];
+    [myCellView addSubview:myTextIntroduce];
     
     int myFoodIconsHeight = 0;
 //    //添加保定小吃图片展示
@@ -136,7 +139,7 @@
             myFoodIcon.contentMode = UIViewContentModeScaleAspectFit;//图片按比例缩放完全显示
 
             myFoodIcon.frame = CGRectMake( kUserIconLeftMargain + 100 * (i % 3), myTextIntroduceSize.height + kUserIconTopMargain + 30 + myTextIntroduceTopMargin + 100 * j, imageWidth - kUserIconLeftMargain, 200 );
-            [self.contentView addSubview:myFoodIcon];
+            [myCellView addSubview:myFoodIcon];
             
         }
         
@@ -152,27 +155,29 @@
     
     
     //添加按钮
-    WZCustomUIImageView *customUIImageView = [[WZCustomUIImageView alloc] initWithFrame:CGRectMake(0, myCellHeight, self.frame.size.width, 44)];
+    WZCustomUIImageView *customUIImageView = [[WZCustomUIImageView alloc] initWithFrame:CGRectMake(0, myCellHeight,self.frame.size.width - 20, 44)];
     
-    [self.contentView addSubview:customUIImageView];
+    [myCellView addSubview:customUIImageView];
     
     
     myCellHeight = myCellHeight + 54;
+     myCellView.frame = CGRectMake(self.frame.origin.x + 10, self.frame.origin.y +10, self.frame.size.width - 20, myCellHeight);
+    [self.contentView addSubview:myCellView];
     return myCellHeight;
 }
 
 
-#pragma  mark 覆盖父类setFrame方法
--(void)setFrame:(CGRect)frame
-{
-    frame.origin.x = 10;
-    frame.origin.y += 10;
-    
-    frame.size.width -= 10 * 2;
-    frame.size.height -= 10;
-    [super setFrame:frame];
-
-}
+//#pragma  mark 覆盖父类setFrame方法
+//-(void)setFrame:(CGRect)frame
+//{
+////    frame.origin.x = 10;
+////    frame.origin.y += 10;
+////    
+////    frame.size.width -= 20;
+////    frame.size.height -= 10;
+//    [super setFrame:frame];
+//
+//}
 
 
 
